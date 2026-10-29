@@ -1,0 +1,8 @@
+{
+  "version": {
+    "license": "MIT",
+    "release_notes": {
+      "en-US": "Initial release. Local domain and server IP capture with offline country exports."
+    }
+  }
+}

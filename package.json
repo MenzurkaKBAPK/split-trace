@@ -1,0 +1,17 @@
+{
+  "name": "split-trace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "build": "python scripts/build.py",
+    "geo:update": "python scripts/update_geo.py",
+    "lint:firefox": "web-ext lint --source-dir dist/firefox --warnings-as-errors",
+    "smoke:chrome": "node scripts/browser_smoke.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1",
+    "web-ext": "10.8.0"
+  }
+}

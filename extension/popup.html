@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Split Trace</title><link rel="stylesheet" href="popup.css">
+<body><header><span class="mark">ST</span><div><h1>Split Trace</h1><small>Amnezia split tunneling</small></div></header>
+<p data-i18n="intro"></p>
+<label class="choice"><input id="split" type="checkbox"><span data-i18n="split"></span></label>
+<label class="duration"><span data-i18n="duration"></span><select id="seconds"><option>10</option><option selected>20</option><option>45</option><option>90</option><option>120</option></select></label>
+<p class="note" data-i18n="warning"></p>
+<button id="start" data-i18n="start"></button><button id="stop" hidden data-i18n="stop"></button>
+<p id="status" role="status" aria-live="polite"></p><p id="error" role="alert"></p>
+<section id="results" hidden><h2 data-i18n="downloads"></h2><div id="downloads"></div><details><summary data-i18n="preview"></summary><pre id="preview"></pre></details><button id="clear" class="secondary" data-i18n="clear"></button></section>
+<footer data-i18n="privacy"></footer><script src="strings.js"></script><script src="core.js"></script><script src="popup.js"></script></body></html>

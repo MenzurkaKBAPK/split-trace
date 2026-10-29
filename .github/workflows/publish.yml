@@ -1,0 +1,73 @@
+name: Publish stores
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: publish-stores
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: npm ci --ignore-scripts
+      - run: node scripts/check_version.mjs
+      - run: npm test
+      - run: npm run build
+      - run: npx --no-install playwright install --with-deps --no-shell chromium
+      - run: npm run smoke:chrome
+      - run: npm run lint:firefox
+      - run: python scripts/check_ascii.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: store-build
+          path: |
+            dist/
+            artifacts/
+  chrome:
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment: stores
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v4
+        with:
+          name: store-build
+      - run: node scripts/publish_chrome.mjs
+        env:
+          CWS_PUBLISHER_ID: ${{ secrets.CWS_PUBLISHER_ID }}
+          CWS_EXTENSION_ID: ${{ secrets.CWS_EXTENSION_ID }}
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+  firefox:
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment: stores
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: store-build
+      - run: npx --no-install web-ext sign --no-config-discovery --source-dir dist/firefox --channel listed --amo-metadata store/amo-metadata.json
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}

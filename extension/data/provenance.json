@@ -1,0 +1,16 @@
+{
+  "retrieved": "2026-10-29T12:45:38.998215+00:00",
+  "license": "PDDL-1.0",
+  "sources": [
+    {
+      "url": "https://github.com/sapics/ip-location-db/releases/download/latest/iptoasn-country-ipv4.csv",
+      "sha256": "a178cb746612772cb9889fea0b63d0c6780126f65f86f186e761961ecb7a7680",
+      "ranges": 230853
+    },
+    {
+      "url": "https://github.com/sapics/ip-location-db/releases/download/latest/iptoasn-country-ipv6.csv",
+      "sha256": "8d421f0eb88c4f7467f8af7181a8d6c9a8434cc165d8ea9433487dbbeb458adb",
+      "ranges": 67774
+    }
+  ]
+}
